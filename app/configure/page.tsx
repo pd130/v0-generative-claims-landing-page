@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { toast } from "sonner"
 import { ArrowLeft, Sparkles } from "lucide-react"
@@ -23,10 +24,11 @@ interface GenerationConfig {
 }
 
 export default function ConfigurePage() {
+  const router = useRouter()
   const [isGenerating, setIsGenerating] = useState(false)
   const [rows, setRows] = useState(1000)
   const [claimRate, setClaimRate] = useState(6)
-  const [recentGenerations, setRecentGenerations] = useState([
+  const [recentGenerations] = useState([
     { id: "1", rows: 5000, status: "completed" as const, time: "2 hours ago" },
     { id: "2", rows: 1000, status: "completed" as const, time: "5 hours ago" },
     { id: "3", rows: 500, status: "failed" as const, time: "1 day ago" },
@@ -37,26 +39,17 @@ export default function ConfigurePage() {
     setRows(config.rows)
     setClaimRate(config.claimRate)
 
-    // Simulate generation process
+    // Show toast and navigate to generation page
     toast.loading("Starting data generation...", {
       id: "generation",
       description: `Generating ${config.rows.toLocaleString()} rows with ${config.claimRate}% claim rate`,
     })
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 3000))
-
-    toast.success("Generation complete!", {
-      id: "generation",
-      description: `Successfully generated ${config.rows.toLocaleString()} synthetic records`,
-    })
-
-    setRecentGenerations((prev) => [
-      { id: Date.now().toString(), rows: config.rows, status: "completed", time: "Just now" },
-      ...prev.slice(0, 2),
-    ])
-
-    setIsGenerating(false)
+    // Brief delay for UX, then navigate to real-time progress page
+    await new Promise((resolve) => setTimeout(resolve, 800))
+    
+    toast.dismiss("generation")
+    router.push("/generate")
   }
 
   return (
