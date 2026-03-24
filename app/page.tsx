@@ -9,7 +9,10 @@ import { StatsSection } from "@/components/stats-section"
 import { Particles } from "@/components/particles"
 
 export default function LandingPage() {
+  const { status, stage, progress, logs, rows, error, start, download, reset } = usePipeline()  // ← moved here, OUTSIDE return
   return (
+    
+
     <main className="relative min-h-screen overflow-hidden">
       {/* Animated gradient background */}
       <div className="fixed inset-0 -z-10">
@@ -82,6 +85,7 @@ export default function LandingPage() {
               Join leading insurance companies using Generative Claims for compliant synthetic data generation.
             </p>
             <motion.button
+              onClick={() => start({ nRows: 10 })}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="px-8 py-4 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground font-semibold text-lg shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300"
