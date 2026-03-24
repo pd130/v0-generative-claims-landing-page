@@ -1,8 +1,9 @@
 "use client"
 
 import { useState, useEffect, useCallback, useRef } from "react"
+import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
-import { Pause, Play, X, Download, ArrowLeft } from "lucide-react"
+import { Pause, Play, X, Download, ArrowLeft, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import {
@@ -55,6 +56,7 @@ const sampleLogMessages = {
 }
 
 export default function GeneratePage() {
+  const router = useRouter()
   const [isPaused, setIsPaused] = useState(false)
   const [isCancelled, setIsCancelled] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -170,6 +172,10 @@ export default function GeneratePage() {
 
   const handleDownload = () => {
     toast.success("Preview data downloaded!")
+  }
+
+  const handleViewResults = () => {
+    router.push("/results")
   }
 
   const isComplete = progress >= 100
@@ -296,11 +302,22 @@ export default function GeneratePage() {
             <Button
               onClick={handleDownload}
               disabled={rowsGenerated < 10}
-              className="gap-2 bg-gradient-to-r from-primary to-accent text-primary-foreground"
+              variant="outline"
+              className="gap-2 bg-card/50 backdrop-blur-sm"
             >
               <Download className="w-4 h-4" />
               Download Preview
             </Button>
+
+            {isComplete && (
+              <Button
+                onClick={handleViewResults}
+                className="gap-2 bg-gradient-to-r from-primary to-accent text-primary-foreground"
+              >
+                View Results
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            )}
           </motion.div>
 
           {/* Log Stream */}
