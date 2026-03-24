@@ -1,5 +1,6 @@
-"use client"
 
+"use client"
+import { usePipeline } from "@/hooks/usePipeline"
 import { motion } from "framer-motion"
 import { Navbar } from "@/components/navbar"
 import { HeroSection } from "@/components/hero-section"
